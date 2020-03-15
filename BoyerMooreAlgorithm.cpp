@@ -23,8 +23,7 @@ int findBoyerMoore(const std::string& text, const std::string& pattern)
     }
 
 
-    std::map <char, int> patternMap = makePatternMap(pattern);
-
+    std::map <char, int> patternMap = makePatternMap(pattern);   
     char lastSymbol = pattern[pattern.length()-1];
     // Обходим введенную строку ориентируясь на длинну паттерна
     for (unsigned int i = pattern.length()-1; i < text.length(); ++i) {
@@ -57,4 +56,36 @@ int findBoyerMoore(const std::string& text, const std::string& pattern)
         }
     }
     return -1;
-} 
+    
+}
+
+int findBoyerMooreHorspool(std::string& text,  std::string& pattern)
+{
+    std::string stopTable;
+
+    // Построение таблицы стоп-символов
+    for (int i = 0; i < 2048; ++i) {
+        stopTable.push_back(-1);
+    }
+    for (int i = 0; i < pattern.size(); ++i) {
+        stopTable.at(pattern.at(i)) = i;
+    }
+    // Процесс поиска
+    for (int i_pos = 0; i_pos <= text.size() - pattern.size();) {
+        int j_pos = pattern.size() - 1;
+        //Проверка на совпадение
+        while (pattern.at(j_pos) == text.at(j_pos + i_pos)) {
+            if (j_pos == 0) {
+                return i_pos;
+            }
+            --j_pos;
+        }
+        // если не совпало
+        if (stopTable.at(text.at(j_pos + i_pos)) == -1) {
+            i_pos += j_pos + 1;
+        } else {
+            i_pos += j_pos - stopTable.at(text.at(j_pos + i_pos));
+        }
+    }
+    return -1;
+}
