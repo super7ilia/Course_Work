@@ -24,5 +24,5 @@ int findKMP(std::string text, std::string pattern)
     delete[] prefix;
     
     // В случае нахождения подстроки - возвращаем позицию - начало подстроки в тесте, в противном случае -1
-    return (j == (int)pattern.length()) ? i - j : -1;
+    return (j == (int)pattern.length()) ? i - j + 1: -1;
 }

@@ -25,12 +25,14 @@ int findBoyerMoore(const std::string& text, const std::string& pattern)
 
     std::map <char, int> patternMap = makePatternMap(pattern);   
     char lastSymbol = pattern[pattern.length()-1];
+    int possiblePosition = 0;
     // Обходим введенную строку ориентируясь на длинну паттерна
     for (unsigned int i = pattern.length()-1; i < text.length(); ++i) {
         // Проверяем соответствие последнего символа паттерна и итерируемого символа строки
         if (text[i] == lastSymbol) {
+            possiblePosition = i;
             // В случае истины, начинаем обратный обход в соответствии с алгоритмом
-            unsigned int backTrack = pattern.length()-2;
+            unsigned int backTrack = pattern.length() - 2;
             for (unsigned int j = i-1; j > i-pattern.length(); ++j) {
                 
                 // Если один из символов не совпадает, то делаем сдвиг в соответствии с алгоритмом
@@ -45,18 +47,18 @@ int findBoyerMoore(const std::string& text, const std::string& pattern)
                     break;
                 }
                 if (backTrack == 0) {
-                    return 1;
+                    return possiblePosition + 1;
                 }
                 --backTrack;
             }
             // Если условие равно нулю -> мы обошли паттерн, все символы совпали, значит подстрока найдена
             if (backTrack == 0) { 
-              return 1;
+              return possiblePosition + 1;
             }
         }
     }
     return -1;
-    
+ 
 }
 
 int findBoyerMooreHorspool(std::string& text,  std::string& pattern)
@@ -76,7 +78,7 @@ int findBoyerMooreHorspool(std::string& text,  std::string& pattern)
         //Проверка на совпадение
         while (pattern.at(j_pos) == text.at(j_pos + i_pos)) {
             if (j_pos == 0) {
-                return i_pos;
+                return i_pos + 1;
             }
             --j_pos;
         }
