@@ -1,6 +1,6 @@
 #include "KnuthMorrisPrattAlgorithm.hpp"
 
-int findKMP(string text, string pattern)
+int findKMP(std::string text, std::string pattern)
 {
     int *prefix = new int[pattern.length()];
     // Рассчет префикс функции
